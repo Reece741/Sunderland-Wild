@@ -232,10 +232,36 @@
         mapboxgl.accessToken = 'pk.eyJ1IjoicmVlY2U3NDEiLCJhIjoiY2xieTRrYWJuMG1xZjNybzUxbHdpMWljYyJ9.1KwWoxU-6-CQEaOsGqTCjA';
         var map = new mapboxgl.Map({
             container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v11',
+            style: 'mapbox://styles/reece741/clc9l2a2500c114s1xhk5f4b0',
             center: [-2.1700, 53.6151],
-            zoom: 15,
+            zoom: 13,
         });
+
+        /* 
+    Add an event listener that runs
+      when a user clicks on the map element.
+    */
+            map.on('click', (event) => {
+                // If the user clicked on one of your markers, get its information.
+                const features = map.queryRenderedFeatures(event.point, {
+                    layers: ['chicago-parks - isnt correct'] // replace with your layer name
+                });
+                if (!features.length) {
+                    return;
+                }
+                const feature = features[0];
+
+                        /* 
+            Create a popup, specify its options 
+            and properties, and add it to the map.
+        */
+                const popup = new mapboxgl.Popup({ offset: [0, -15] })
+                    .setLngLat(feature.geometry.coordinates)
+                    .setHTML(
+                        `<h3>${feature.properties.title}</h3><p>${feature.properties.description}</p>`
+                    )
+                    .addTo(map);
+            });
 
     </script>
 </body>
